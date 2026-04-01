@@ -1,43 +1,60 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
-class Bogie {
-    int capacity;
-    public Bogie(int capacity) { this.capacity = capacity; }
-    public int getCapacity() { return capacity; }
+// 1. Create a custom exception class
+class InvalidCapacityException extends Exception {
+    public InvalidCapacityException(String message) {
+        super(message);
+    }
 }
 
-public class PerformanceBenchmarkingApp {
+class PassengerBogie {
+    private String id;
+    private int capacity;
+
+    // 2. Validate capacity inside the constructor
+    // 3. Declare the constructor with 'throws'
+    public PassengerBogie(String id, int capacity) throws InvalidCapacityException {
+        if (capacity <= 0) {
+            // 4. Throw the exception when capacity is invalid
+            throw new InvalidCapacityException("Capacity must be greater than zero. Provided: " + capacity);
+        }
+        this.id = id;
+        this.capacity = capacity;
+    }
+
+    @Override
+    public String toString() {
+        return "PassengerBogie{ID='" + id + "', Capacity=" + capacity + "}";
+    }
+}
+
+public class TrainConsistApp {
     public static void main(String[] args) {
-        // 1. Prepare a large collection of bogies for testing
-        List<Bogie> trainConsist = new ArrayList<>();
-        for (int i = 0; i < 100000; i++) {
-            trainConsist.add(new Bogie(new Random().nextInt(100)));
+        System.out.println("--- UC14: Custom Exception Validation ---");
+
+        try {
+            // Attempting to create a valid bogie
+            PassengerBogie s1 = new PassengerBogie("S1", 72);
+            System.out.println("✅ Successfully created: " + s1);
+
+            // Attempting to create an invalid bogie (Zero Capacity)
+            System.out.println("\nAttempting to create bogie with 0 capacity...");
+            PassengerBogie invalid1 = new PassengerBogie("S2", 0);
+
+        } catch (InvalidCapacityException e) {
+            // System handles the error and prevents the object from being added
+            System.err.println("❌ Error: " + e.getMessage());
         }
 
-        // --- Loop-Based Filtering ---
-        long startLoop = System.nanoTime(); // Record start time
-        List<Bogie> loopResult = new ArrayList<>();
-        for (Bogie b : trainConsist) {
-            if (b.getCapacity() > 60) {
-                loopResult.add(b);
-            }
+        try {
+            // Attempting to create an invalid bogie (Negative Capacity)
+            System.out.println("\nAttempting to create bogie with -10 capacity...");
+            PassengerBogie invalid2 = new PassengerBogie("S3", -10);
+
+        } catch (InvalidCapacityException e) {
+            System.err.println("❌ Error: " + e.getMessage());
         }
-        long endLoop = System.nanoTime(); // Record end time
-        long loopDuration = endLoop - startLoop;
 
-        // --- Stream-Based Filtering ---
-        long startStream = System.nanoTime(); // Record start time
-        List<Bogie> streamResult = trainConsist.stream()
-                .filter(b -> b.getCapacity() > 60)
-                .collect(Collectors.toList());
-        long endStream = System.nanoTime(); // Record end time
-        long streamDuration = endStream - startStream;
-
-        // Display results
-        System.out.println("--- Performance Results (nanoseconds) ---");
-        System.out.println("Loop Duration  : " + loopDuration + " ns");
-        System.out.println("Stream Duration: " + streamDuration + " ns");
-        System.out.println("Results Match  : " + (loopResult.size() == streamResult.size()));
+        System.out.println("\nProgram continues safely...");
     }
 }
