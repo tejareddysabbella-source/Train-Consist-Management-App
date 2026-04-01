@@ -1,48 +1,51 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
-// Reusing Bogie class from UC7
+// Base class for Bogies
 class Bogie {
-    String name;
-    int capacity;
+    private String id;
+    private String type; // e.g., "Sleeper", "AC Chair", "Rectangular"
 
-    Bogie(String name, int capacity) {
-        this.name = name;
-        this.capacity = capacity;
+    public Bogie(String id, String type) {
+        this.id = id;
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
     }
 
     @Override
     public String toString() {
-        return name + " → Capacity: " + capacity;
+        return "Bogie{ID='" + id + "'}";
     }
 }
 
-public class TrainApp {
-
+public class TrainConsistApp {
     public static void main(String[] args) {
+        // 1. User creates a list of bogies
+        List<Bogie> consist = Arrays.asList(
+                new Bogie("S1", "Sleeper"),
+                new Bogie("S2", "Sleeper"),
+                new Bogie("A1", "AC Chair"),
+                new Bogie("G1", "Rectangular"),
+                new Bogie("G2", "Cylindrical"),
+                new Bogie("A2", "AC Chair")
+        );
 
-        System.out.println("=== Train Consist Management App ===");
+        System.out.println("--- Original Flat Consist List ---");
+        consist.forEach(System.out::println);
 
-        // Original bogie list
-        List<Bogie> bogies = new ArrayList<>();
-        bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 56));
-        bogies.add(new Bogie("First Class", 24));
+        // 2. System converts list to stream & 3. groupingBy() is applied
+        Map<String, List<Bogie>> groupedBogies = consist.stream()
+                .collect(Collectors.groupingBy(Bogie::getType));
 
-        // Filter bogies with capacity > 60
-        List<Bogie> filteredBogies = bogies.stream()
-                .filter(b -> b.capacity > 60)
-                .collect(Collectors.toList());
+        // 5. Grouped result is displayed
+        System.out.println("\n--- Grouped Bogie Report (UC9) ---");
+        groupedBogies.forEach((type, list) -> {
+            System.out.println("Type: [" + type + "] -> " + list);
+        });
 
-        // Display filtered bogies
-        System.out.println("\nFiltered Bogies (Capacity > 60):");
-        for (Bogie b : filteredBogies) {
-            System.out.println(b);
-        }
-
-        // Show original list remains unchanged
-        System.out.println("\nOriginal Bogie List:");
-        System.out.println(bogies);
+        System.out.println("\nProgram continues...");
     }
 }
