@@ -1,23 +1,23 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
-// Base class for Bogies
 class Bogie {
     private String id;
-    private String type; // e.g., "Sleeper", "AC Chair", "Rectangular"
+    private String type;
+    private int capacity;
 
-    public Bogie(String id, String type) {
+    public Bogie(String id, String type, int capacity) {
         this.id = id;
         this.type = type;
+        this.capacity = capacity;
     }
 
-    public String getType() {
-        return type;
+    public int getCapacity() {
+        return capacity;
     }
 
     @Override
     public String toString() {
-        return "Bogie{ID='" + id + "'}";
+        return type + " (" + id + ") - Seats: " + capacity;
     }
 }
 
@@ -25,27 +25,23 @@ public class TrainConsistApp {
     public static void main(String[] args) {
         // 1. User creates a list of bogies
         List<Bogie> consist = Arrays.asList(
-                new Bogie("S1", "Sleeper"),
-                new Bogie("S2", "Sleeper"),
-                new Bogie("A1", "AC Chair"),
-                new Bogie("G1", "Rectangular"),
-                new Bogie("G2", "Cylindrical"),
-                new Bogie("A2", "AC Chair")
+                new Bogie("S1", "Sleeper", 72),
+                new Bogie("S2", "Sleeper", 72),
+                new Bogie("A1", "AC Chair", 56),
+                new Bogie("F1", "First Class", 24)
         );
 
-        System.out.println("--- Original Flat Consist List ---");
+        System.out.println("--- Current Train Consist ---");
         consist.forEach(System.out::println);
 
-        // 2. System converts list to stream & 3. groupingBy() is applied
-        Map<String, List<Bogie>> groupedBogies = consist.stream()
-                .collect(Collectors.groupingBy(Bogie::getType));
+        // 2. Convert to stream, 3. map() to capacity, 4. reduce() to sum
+        int totalSeats = consist.stream()
+                .map(Bogie::getCapacity)        // Transformation: Bogie -> Integer
+                .reduce(0, Integer::sum);       // Aggregation: (runningTotal, nextValue) -> sum
 
-        // 5. Grouped result is displayed
-        System.out.println("\n--- Grouped Bogie Report (UC9) ---");
-        groupedBogies.forEach((type, list) -> {
-            System.out.println("Type: [" + type + "] -> " + list);
-        });
-
-        System.out.println("\nProgram continues...");
+        // 5. Total seating capacity is displayed
+        System.out.println("\n------------------------------");
+        System.out.println("Total Seating Capacity: " + totalSeats);
+        System.out.println("------------------------------");
     }
 }
