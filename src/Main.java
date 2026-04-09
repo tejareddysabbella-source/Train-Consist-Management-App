@@ -1,61 +1,41 @@
+import java.util.Arrays;
+
 public class TrainConsistManagementApp {
-
-    public static void bubbleSort(int[] capacities) {
-
-        int n = capacities.length;
-
-        for (int i = 0; i < n - 1; i++) {
-
-            for (int j = 0; j < n - i - 1; j++) {
-
-                if (capacities[j] > capacities[j + 1]) {
-
-                    int temp = capacities[j];
-                    capacities[j] = capacities[j + 1];
-                    capacities[j + 1] = temp;
-                }
-            }
-        }
-    }
-
-
-    public static void display(int[] arr) {
-        for (int value : arr) {
-            System.out.print(value + " ");
-        }
-        System.out.println();
-    }
 
     public static void main(String[] args) {
 
-        int[] capacities = {72, 56, 24, 70, 60};
+        // Example bogie names
+        String[] bogieNames = {"Sleeper", "AC Chair", "First Class", "General", "Luxury"};
 
         System.out.println("Before Sorting:");
-        display(capacities);
+        System.out.println(Arrays.toString(bogieNames));
 
-        bubbleSort(capacities);
+        // Sorting using built-in method
+        Arrays.sort(bogieNames);
 
-        System.out.println("After Sorting (Ascending):");
-        display(capacities);
+        System.out.println("After Sorting (Alphabetical):");
+        System.out.println(Arrays.toString(bogieNames));
+
+        // Additional Test Cases
+
+        System.out.println("\nTest Case: Unsorted Input");
+        String[] unsorted = {"Luxury", "General", "Sleeper", "AC Chair"};
+        Arrays.sort(unsorted);
+        System.out.println(Arrays.toString(unsorted));
 
         System.out.println("\nTest Case: Already Sorted");
-        int[] sortedArr = {24, 56, 60, 70, 72};
-        bubbleSort(sortedArr);
-        display(sortedArr);
+        String[] sorted = {"AC Chair", "First Class", "General"};
+        Arrays.sort(sorted);
+        System.out.println(Arrays.toString(sorted));
 
         System.out.println("\nTest Case: Duplicates");
-        int[] duplicateArr = {72, 56, 56, 24};
-        bubbleSort(duplicateArr);
-        display(duplicateArr);
+        String[] duplicates = {"Sleeper", "AC Chair", "Sleeper", "General"};
+        Arrays.sort(duplicates);
+        System.out.println(Arrays.toString(duplicates));
 
         System.out.println("\nTest Case: Single Element");
-        int[] singleArr = {50};
-        bubbleSort(singleArr);
-        display(singleArr);
-
-        System.out.println("\nTest Case: All Equal");
-        int[] equalArr = {40, 40, 40};
-        bubbleSort(equalArr);
-        display(equalArr);
+        String[] single = {"Sleeper"};
+        Arrays.sort(single);
+        System.out.println(Arrays.toString(single));
     }
 }
