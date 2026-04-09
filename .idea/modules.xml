@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/Train-Consist-Management-App.iml" filepath="$PROJECT_DIR$/Train-Consist-Management-App.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/Train Consist Management App.iml" filepath="$PROJECT_DIR$/Train Consist Management App.iml" />
+>>>>>>> f548096978e7ae43406b1b33077b0411f2d7fa66
     </modules>
   </component>
 </project>
