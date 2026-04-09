@@ -1,41 +1,49 @@
-import java.util.Arrays;
-
 public class TrainConsistManagementApp {
+
+    // Linear Search Method
+    public static boolean linearSearch(String[] bogieIds, String key) {
+
+        // Traverse array
+        for (int i = 0; i < bogieIds.length; i++) {
+
+            // Compare using equals()
+            if (bogieIds[i].equals(key)) {
+                return true; // Match found
+            }
+        }
+
+        return false; // Not found
+    }
 
     public static void main(String[] args) {
 
-        // Example bogie names
-        String[] bogieNames = {"Sleeper", "AC Chair", "First Class", "General", "Luxury"};
+        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
 
-        System.out.println("Before Sorting:");
-        System.out.println(Arrays.toString(bogieNames));
+        String searchKey = "BG309";
 
-        // Sorting using built-in method
-        Arrays.sort(bogieNames);
+        System.out.println("Searching for Bogie ID: " + searchKey);
 
-        System.out.println("After Sorting (Alphabetical):");
-        System.out.println(Arrays.toString(bogieNames));
+        boolean found = linearSearch(bogieIds, searchKey);
+
+        if (found) {
+            System.out.println("✅ Bogie Found!");
+        } else {
+            System.out.println("❌ Bogie Not Found!");
+        }
 
         // Additional Test Cases
 
-        System.out.println("\nTest Case: Unsorted Input");
-        String[] unsorted = {"Luxury", "General", "Sleeper", "AC Chair"};
-        Arrays.sort(unsorted);
-        System.out.println(Arrays.toString(unsorted));
+        System.out.println("\nTest Case: Not Found");
+        System.out.println(linearSearch(bogieIds, "BG999"));
 
-        System.out.println("\nTest Case: Already Sorted");
-        String[] sorted = {"AC Chair", "First Class", "General"};
-        Arrays.sort(sorted);
-        System.out.println(Arrays.toString(sorted));
+        System.out.println("\nTest Case: First Element");
+        System.out.println(linearSearch(bogieIds, "BG101"));
 
-        System.out.println("\nTest Case: Duplicates");
-        String[] duplicates = {"Sleeper", "AC Chair", "Sleeper", "General"};
-        Arrays.sort(duplicates);
-        System.out.println(Arrays.toString(duplicates));
+        System.out.println("\nTest Case: Last Element");
+        System.out.println(linearSearch(bogieIds, "BG550"));
 
         System.out.println("\nTest Case: Single Element");
-        String[] single = {"Sleeper"};
-        Arrays.sort(single);
-        System.out.println(Arrays.toString(single));
+        String[] single = {"BG101"};
+        System.out.println(linearSearch(single, "BG101"));
     }
 }
