@@ -2,11 +2,14 @@ import java.util.Arrays;
 
 public class TrainConsistManagementApp {
 
-    // Binary Search Method
-    public static boolean binarySearch(String[] bogieIds, String key) {
-        if (bogieIds == null || bogieIds.length == 0) return false;
+    // Binary Search with Exception Handling
+    public static boolean searchBogie(String[] bogieIds, String key) {
+        // Defensive check
+        if (bogieIds == null || bogieIds.length == 0) {
+            throw new IllegalStateException("Cannot search: No bogies have been added yet.");
+        }
 
-        // Ensure array is sorted
+        // Binary search requires sorted array
         Arrays.sort(bogieIds);
 
         int low = 0;
@@ -19,9 +22,9 @@ public class TrainConsistManagementApp {
             if (cmp == 0) {
                 return true; // Found
             } else if (cmp < 0) {
-                high = mid - 1; // Search left
+                high = mid - 1;
             } else {
-                low = mid + 1;  // Search right
+                low = mid + 1;
             }
         }
 
@@ -30,33 +33,21 @@ public class TrainConsistManagementApp {
 
     public static void main(String[] args) {
 
-        // Sorted example
-        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
+        // Example with bogies
+        String[] bogies = {"BG101", "BG205", "BG309"};
 
-        String searchKey = "BG309";
-        System.out.println("Searching for Bogie ID: " + searchKey);
-        System.out.println(binarySearch(bogieIds, searchKey) ? "✅ Bogie Found!" : "❌ Bogie Not Found!");
+        try {
+            System.out.println("Searching BG205: " + searchBogie(bogies, "BG205"));
+        } catch (IllegalStateException e) {
+            System.out.println(e.getMessage());
+        }
 
-        // Test Cases
-        System.out.println("\nTest Case: Not Found");
-        System.out.println(binarySearch(bogieIds, "BG999"));
-
-        System.out.println("\nTest Case: First Element");
-        System.out.println(binarySearch(bogieIds, "BG101"));
-
-        System.out.println("\nTest Case: Last Element");
-        System.out.println(binarySearch(bogieIds, "BG550"));
-
-        System.out.println("\nTest Case: Single Element");
-        String[] single = {"BG101"};
-        System.out.println(binarySearch(single, "BG101"));
-
-        System.out.println("\nTest Case: Empty Array");
-        String[] empty = {};
-        System.out.println(binarySearch(empty, "BG101"));
-
-        System.out.println("\nTest Case: Unsorted Input");
-        String[] unsorted = {"BG309","BG101","BG550","BG205","BG412"};
-        System.out.println(binarySearch(unsorted, "BG205"));
+        // Example with empty bogies
+        String[] emptyBogies = {};
+        try {
+            System.out.println("Searching BG101: " + searchBogie(emptyBogies, "BG101"));
+        } catch (IllegalStateException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
